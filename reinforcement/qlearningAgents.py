@@ -40,6 +40,11 @@ class QLearningAgent(ReinforcementAgent):
     """
     def __init__(self, **args):
         "You can initialize Q-values here..."
+        
+        # initialize all q-values to zero (use an empty dictionary)
+        self.values = {}
+
+
         ReinforcementAgent.__init__(self, **args)
 
         "*** YOUR CODE HERE ***"
@@ -51,6 +56,22 @@ class QLearningAgent(ReinforcementAgent):
           or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
+
+        
+        # find transition states based on current action and state
+        transitionStates = self.mdp.getTransitionStatesAndProbs(state, action)
+
+        sumOfTransitions = 0.0
+
+        for ts in transitionStates:
+          nextState = ts[0]
+          prob = ts[1]
+          sumOfTransitions += prob * (self.getValue(state) + (self.discount * self.getValue(nextState)))
+
+        qValue = sumOfTransitions
+
+        return qValue
+
         util.raiseNotDefined()
 
 
@@ -70,9 +91,37 @@ class QLearningAgent(ReinforcementAgent):
           are no legal actions, which is the case at the terminal state,
           you should return None.
         """
-        "*** YOUR CODE HERE ***"
+           
+        legalActions = self.getLegalActions
+        
+        # if we're at the terminal state return none
+        if len(legalActions) == 0:
+          return None
+
+        maxQValue = -float("Inf")
+        bestAction = None
+        
+        # otherwise take the action that corresponds with the highest q value
+        for action in legalActions:
+          qValue = self.getQValue(state, action)
+          
+          if qValue > maxQValue:
+            maxQValue = qValue
+            bestAction = action
+
+          # break tiebreakers randomly using random.choice()
+          else if qValue == maxQValue:
+            temp = [bestAction, action]
+            
+            # randomly keep the previous action or use the new one
+            bestAction = random.choice(temp)
+
+
+        return bestAction
+
         util.raiseNotDefined()
 
+    # this is for Q5 (the epsilon greedy question)    
     def getAction(self, state):
         """
           Compute the action to take in the current state.  With
@@ -88,6 +137,9 @@ class QLearningAgent(ReinforcementAgent):
         legalActions = self.getLegalActions(state)
         action = None
         "*** YOUR CODE HERE ***"
+
+        # choose the best action at a probability of 1 - self.epsilon 
+        # choose a random action using random.choice() at probabilty epsilon
         util.raiseNotDefined()
 
         return action
@@ -102,6 +154,9 @@ class QLearningAgent(ReinforcementAgent):
           it will be called on your behalf
         """
         "*** YOUR CODE HERE ***"
+        # if state is not null
+        # preform the q value update to the dictionary 
+
         util.raiseNotDefined()
 
     def getPolicy(self, state):
