@@ -45,15 +45,14 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         
-        # keep track of new values
-        #newValues = util.Counter()
+     
 
         # need to find new utilites for all states in S
         states = mdp.getStates()
 
         # update the values for all iterations
         for i in range(iterations):
-          
+          # keep track of new values
           newValues = util.Counter()
           # for each state find the new utility
           for s in states:
@@ -72,7 +71,6 @@ class ValueIterationAgent(ValueEstimationAgent):
                 
                 
                 # update utilities by finding the maximum q value
-                # largestUtility = -float("Inf")
                 # find qValues based on the actions
                 qValues = []
                 for a in actions:
@@ -89,13 +87,7 @@ class ValueIterationAgent(ValueEstimationAgent):
 
                   qValues.append(qValue)
 
-                  
-                  # qValue = self.computeQValueFromValues(s, a)
-
-                  # if qValue > largestUtility:
-                  #  largestUtility = qValue
-
-                #newValues[s] = largestUtility
+             
                 maxQValue = max(qValues)
                 newValues[s] = maxQValue
 
@@ -143,8 +135,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        
-
+  
         actions = self.mdp.getPossibleActions(state)
 
         maxQValue = -float("Inf")
@@ -159,44 +150,7 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         return bestAction
 
-        """
-        actions = self.mdp.getPossibleActions(state)
-
-        # if we're at a terminal state
-        if len(actions) == 0:
-          return None
-
-        # find transition states
-        #transitionStates = None
-        bestAction = None
-        maxActionScore = -float("Inf")
-
-        for a in actions:
-          transitionStates = self.mdp.getTransitionStatesAndProbs(state, a)
-
-        #bestNextState = None
-        #largestUtility = -float("Inf")
-        #transitionStateScore = 0.0
-
-          transitionStateScore = 0.0
-          # calculate the utility of each of the transition states
-          for t in transitionStates:
-            
-            nextState = t[0]
-            prob = t[1]
-            transitionStateScore += prob * (self.mdp.getReward(state, a, nextState) + (self.discount * self.getValue(nextState))) 
-            #transitionStateScore += prob * self.getValue(nextState) 
-
-            if transitionStateScore > maxActionScore: #largestUtility:
-              #largestUtility = transitionStateScore
-              #bestNextState = nextState
-              maxActionScore = transitionStateScore
-              bestAction = a
-
-
-        return bestAction
-        """
-
+      
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
 
