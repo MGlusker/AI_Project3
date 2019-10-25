@@ -120,8 +120,7 @@ class QLearningAgent(ReinforcementAgent):
 
         return bestAction
 
-
-    # this is for Q5 (the epsilon greedy question)    
+ 
     def getAction(self, state):
         """
           Compute the action to take in the current state.  With
@@ -136,13 +135,21 @@ class QLearningAgent(ReinforcementAgent):
         # Pick Action
         legalActions = self.getLegalActions(state)
         action = None
-        "*** YOUR CODE HERE ***"
-
+        
         # choose the best action at a probability of 1 - self.epsilon 
-        # choose a random action using random.choice() at probabilty epsilon
-        util.raiseNotDefined()
+        # choose a random action at a probabilty of self.epsilon
 
-        return action
+        # if findRandom action is true this means we find random action (with probability epsilon)
+        # if false it means we return the best action
+        findRandom = util.flipCoin(self.epsilon)
+
+        if findRandom:
+          bestAction = random.choice(legalActions)
+
+        else:
+          bestAction = self.computeActionFromQValues(state)
+           
+        return bestAction
 
     def update(self, state, action, nextState, reward):
         """
