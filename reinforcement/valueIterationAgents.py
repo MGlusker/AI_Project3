@@ -81,9 +81,13 @@ class ValueIterationAgent(ValueEstimationAgent):
                   for ts in transitionStates:
                     nextState = ts[0]
                     prob = ts[1]
-                    sumOfTransitions += prob * (self.mdp.getReward(s, a, nextState) + (self.discount * self.getValue(nextState)))
+                    # value for this state * the probability of getting there
+                    sumOfTransitions += prob * self.getValue(nextState)
+                    #sumOfTransitions += prob * (self.mdp.getReward(s, a, nextState) + (self.discount * self.getValue(nextState)))
 
-                  qValue = sumOfTransitions
+                  # current reward + the discount factor * the sum over all of the transition states
+                  qValue = self.mdp.getReward(s, None, None) + self.discount * sumOfTransitions
+                  # qValue = sumOfTransitions
 
                   qValues.append(qValue)
 
@@ -120,9 +124,12 @@ class ValueIterationAgent(ValueEstimationAgent):
         for ts in transitionStates:
           nextState = ts[0]
           prob = ts[1]
-          sumOfTransitions += prob * (self.mdp.getReward(state, action, nextState) + (self.discount * self.getValue(nextState)))
+          sumOfTransitions += prob * self.getValue(nextState)
+          #sumOfTransitions += prob * (self.mdp.getReward(state, action, nextState) + (self.discount * self.getValue(nextState)))
 
-        qValue = sumOfTransitions
+        # current reward + the discount factor * the sum over all of the transition states
+        qValue = self.mdp.getReward(state, None, None) + self.discount * sumOfTransitions
+        #qValue = sumOfTransitions
 
         return qValue
 
